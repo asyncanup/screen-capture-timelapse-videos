@@ -4,7 +4,7 @@ const sh = cmd => execSync(cmd);
 const out = cmd => execSync(cmd).toString().split('\n');
 const l = (...args) => console.log(...args);
 const getImageName = path => path.substr(path.lastIndexOf('/')).substr(1).split('.png')[0].replace(/\./g, ':').replace('T', ' ');
-const getImagePathsForDay = day => out(`ls screenshots/*/${day}*.png`);
+const getImagePathsForDay = day => out(`find screenshots/ -name '${day}*.png'`);
 const getImageSignature = path => out(`magick identify -verbose '${path}' | grep signature`)[0].trim().split(' ')[1];
 const removeImagesForDay = day => sh(`rm screenshots/*/${day}*.png`);
 
