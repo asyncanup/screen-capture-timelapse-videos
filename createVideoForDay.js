@@ -21,8 +21,11 @@ const uniqueBySignature = (imagePathSig, i, imagePathSigsArr) => {
 };
 
 const imagePaths = getImagePathsForDay(day);
-l(`Found ${imagePaths.length} images for ${day}. Calculating signatures:`);
+l(`Found ${imagePaths.length ? imagePaths.length : 'no'} images for ${day}.`);
 
+if (!imagePaths.length) { process.exit(0); }
+
+l(`Calculating signatures:`);
 const sigs = getSigs();
 l(`Found ${Object.keys(sigs).length} keys to reuse`);
 

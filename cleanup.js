@@ -7,23 +7,22 @@ if (!day) {
 }
 
 const {
-  l, getImageName, getImagePathsForDay, removeImagesForDay,
+  l, getImageName, getImagePathsForDay, removeImages,
   getSigs, writeSigs, SIG_UNKNOWN
 } = require('./utils');
 
 const sigs = getSigs();
-let deletedSigCount = 0;
+const deletedPaths = [];
 Object.keys(sigs).forEach(path => {
   if (getImageName(path).startsWith(day)) {
     delete sigs[path];
-    deletedSigCount += 1;
+    deletedPaths.push(path);
   }
 });
 writeSigs(sigs);
 
-l(`Deleted ${deletedSigCount} pre-calculated signatures, ${Object.keys(sigs).length} remaining`);
+l(`Deleted ${deletedPaths.length} pre-calculated signatures, ${Object.keys(sigs).length} remaining`);
 
-const deletedFileCount = getImagePathsForDay(day).length;
-removeImagesForDay(day);
-l(`Deleted ${deletedFileCount} screenshots`);
+removeImages(deletedPaths);
+l(`Deleted ${deletedPaths.length} screenshots`);
 
