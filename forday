@@ -1,0 +1,1 @@
+./createVideoForDay.js $1 && ./cleanup.js $1
