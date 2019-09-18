@@ -53,7 +53,7 @@ imagePathSigs
   .filter(ps => ps[1] !== SIG_UNKNOWN)
   .filter(uniqueBySignature)
   .forEach(([path, sig], i) => {
-    sh(`convert '${path}' -resize 1920x1080 image.png`);
+    sh(`convert '${path}' -resize 1920X1080 image.png`);
     sh(`convert -size 300x80 xc:none -pointsize 30 -gravity north -draw "fill black rectangle 0,0,300,35" ` +
       `-draw "fill white text 0,0 '${getImageName(path)}'" watermark.png`);
     sh(`composite -dissolve 50% -gravity south watermark.png image.png .vid/${String(i).padStart(5, '0')}.png`);
