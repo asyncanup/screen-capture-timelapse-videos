@@ -48,20 +48,18 @@ const imagePathSigs = imagePaths.map((path, pathIndex) => {
 writeSigs(sigs);
 
 l(`Started converting day's images to video`);
-sh(`rm -rf .vid/ && mkdir .vid`);
 imagePathSigs
   .filter(ps => ps[1] !== SIG_UNKNOWN)
   .filter(uniqueBySignature)
   .forEach(([path, sig], i) => {
-    sh(`convert '${path}' -resize 1920X1080 image.png`);
+    sh(`convert '${path}' -resize 1920X1080 ${day}-image.png`);
     sh(`convert -size 300x80 xc:none -pointsize 30 -gravity north -draw "fill black rectangle 0,0,300,35" ` +
-      `-draw "fill white text 0,0 '${getImageName(path)}'" watermark.png`);
-    sh(`composite -dissolve 50% -gravity south watermark.png image.png .vid/${String(i).padStart(5, '0')}.png`);
-    sh(`rm image.png watermark.png`);
+      `-draw "fill white text 0,0 '${getImageName(path)}'" ${day}-watermark.png`);
+    sh(`composite -dissolve 50% -gravity south ${day}-watermark.png ${day}-image.png .vid/${day}-${String(i).padStart(5, '0')}.png`);
+    sh(`rm ${day}-image.png ${day}-watermark.png`);
   });
 
-sh(`ffmpeg -y -r 15 -f image2 -i '.vid/%05d.png' -vcodec libx264 -pix_fmt yuv420p -crf 10 ${day}.mp4`);
-sh(`rm -rf .vid/`);
+sh(`ffmpeg -y -r 15 -f image2 -i '.vid/${day}-%05d.png' -vcodec libx264 -pix_fmt yuv420p -crf 10 ${day}.mp4`);
 
 l('Done!');
 
