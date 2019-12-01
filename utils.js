@@ -7,7 +7,10 @@ const out = cmd => {
 };
 const l = (...args) => console.log(...args);
 const getImageName = path => path.substr(path.lastIndexOf('/')).substr(1).split('.png')[0].replace(/\./g, ':').replace('T', ' ');
-const getImagePathsForDay = day => out(`find screenshots/ -name '${day}*.png'`).sort();
+// TODO: to make this script runnable from anywhere, add __dirname in front of
+// screenshots in the command below
+// Other changes will also be required, probably.
+const getImagePathsForDay = day => out(`find screenshots -name '${day}*.png'`).sort();
 const getImageSignature = path => out(`magick identify -verbose '${path}' | grep signature`)[0].trim().split(' ')[1];
 const removeImages = images => images.forEach(path => sh(`rm '${path}'`));
 

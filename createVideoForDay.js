@@ -52,10 +52,12 @@ imagePathSigs
   .filter(ps => ps[1] !== SIG_UNKNOWN)
   .filter(uniqueBySignature)
   .forEach(([path, sig], i) => {
+    const framePath = `.vid/${day}-${String(i).padStart(5, '0')}.png`;
+    if (fs.existsSync(framePath)) { return; }
     sh(`convert '${path}' -resize 1920X1080 ${day}-image.png`);
     sh(`convert -size 300x80 xc:none -pointsize 30 -gravity north -draw "fill black rectangle 0,0,300,35" ` +
       `-draw "fill white text 0,0 '${getImageName(path)}'" ${day}-watermark.png`);
-    sh(`composite -dissolve 50% -gravity south ${day}-watermark.png ${day}-image.png .vid/${day}-${String(i).padStart(5, '0')}.png`);
+    sh(`composite -dissolve 50% -gravity south ${day}-watermark.png ${day}-image.png ${framePath}`);
     sh(`rm ${day}-image.png ${day}-watermark.png`);
   });
 
